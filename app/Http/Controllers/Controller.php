@@ -23,7 +23,7 @@ class Controller extends BaseController
     {
         return [
             'success' => false,
-            'data' => $data,
+            'message' => $data,
         ];
     }
 }
