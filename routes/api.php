@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\ForgotController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,9 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/*User Authentication*/
 Route::controller(AuthController::class)
 ->group(function () {
     Route::post('/register', 'signUp');
     Route::post('/login', 'signIn');
     Route::middleware('auth:api')->post('/logout', 'signOut');
+});
+
+/*Forgot Password*/
+Route::controller(ForgotController::class)
+->group(function () {
+    Route::post('/forgot', 'forgot');
+    Route::post('/reset', 'reset');
 });
