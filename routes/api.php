@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\QrController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotController;
 use Illuminate\Support\Facades\Route;
@@ -28,4 +29,8 @@ Route::controller(ForgotController::class)
 ->group(function () {
     Route::post('/forgot', 'forgot');
     Route::post('/reset', 'reset');
+});
+
+Route::group(['middleware' => ['auth:api']], function () {
+    Route::post('/qr/{token}/attach-user', [QrController::class, 'attachUser']);
 });
