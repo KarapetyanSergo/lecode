@@ -10,7 +10,7 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'string',
-            'email' => 'email',
+            'email' => 'email|unique:users,email',
         ];
     }
 }
