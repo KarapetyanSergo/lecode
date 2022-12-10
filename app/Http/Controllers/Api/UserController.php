@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         try {
             $user = auth()->user();
-            $user->update($request->only(['name', 'email']));
+            $user->update($request->only(['name', 'email', 'telegram_link', 'instagram_link', 'linkedin_link', 'facebook_link']));
 
             return response()->json($this->successResponse($user));
         } catch (Exception $e) {
