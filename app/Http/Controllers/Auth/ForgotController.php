@@ -13,7 +13,6 @@ class ForgotController extends Controller
 {
     public function forgot(ForgotRequest $request, ForgotPasswordService $forgotPasswordService): JsonResponse
     {
-        dd(mb_strcut('Полуустав', 0, pow(2,31)-1));
         try {
             $forgotPasswordService->forgot($request->email);
 
