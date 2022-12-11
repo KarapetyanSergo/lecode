@@ -1,10 +1,10 @@
 @component('mail::message')
 # Introduction
 
-{{$token}}
+<p>Password reset token {{$token}}</p>
 
 @component('mail::button', ['url' => ''])
-Button Text
+Reset
 @endcomponent
 
 Thanks,<br>
