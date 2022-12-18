@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthService
 {
-    public function register(array $requestData): User
+    public function register(array $requestData): array
     {
         $user = User::create([
             'name'  =>  $requestData['name'],
@@ -16,7 +16,10 @@ class AuthService
             'password' => Hash::make($requestData['password'])
         ]);
 
-        return $user;
+        return [
+            'user' => $user,
+            'token' => $user->createToken('Login')->accessToken,
+        ];
     }
 
     public function login(array $requestData): array
@@ -28,7 +31,7 @@ class AuthService
 
         return [
             'user' => $user,
-            'token' => $user->createToken('Token Name')->accessToken,
+            'token' => $user->createToken('Login')->accessToken,
         ];
     }
 

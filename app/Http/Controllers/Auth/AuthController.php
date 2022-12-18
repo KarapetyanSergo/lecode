@@ -13,10 +13,14 @@ class AuthController extends Controller
 {
     public function signUp(SignUpRequest $signUpRequest, AuthService $authService): JsonResponse
     {
-        $validatedData = $signUpRequest->validated();
-        $register = $authService->register($validatedData);
-    
-        return response()->json($this->successResponse($register));
+        try {
+            $validatedData = $signUpRequest->validated();
+            $register = $authService->register($validatedData);
+        
+            return response()->json($this->successResponse($register));
+        } catch (Exception $e) {
+            return response()->json($this->errorResponse($e->getMessage()));
+        }
     }
 
     public function signIn(SignInRequest $signInRequest, AuthService $authService): JsonResponse
