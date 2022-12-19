@@ -21,10 +21,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'description',
         'telegram_link',
         'linkedin_link',
         'instagram_link',
         'facebook_link',
+        'opensea_link',
     ];
 
     /**
