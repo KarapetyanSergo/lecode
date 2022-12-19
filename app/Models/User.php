@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'description',
+        'image',
         'telegram_link',
         'linkedin_link',
         'instagram_link',
