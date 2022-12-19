@@ -38,7 +38,7 @@ Route::controller(UserController::class)
 ->group(function () {
     Route::get('/users', 'getUser');
     Route::put('/users', 'updateUser');
-    Route::post('/upload-image', 'uploadImage');
+    Route::post('/users/upload-image', 'uploadImage');
 });
 
 /*Attach QR Token*/
