@@ -35,10 +35,15 @@ Route::controller(ForgotController::class)
 /*User Profile*/
 Route::controller(UserController::class)
 ->middleware('auth:api')
+->prefix('/users')
 ->group(function () {
-    Route::get('/users', 'getUser');
-    Route::put('/users', 'updateUser');
-    Route::post('/users/upload-image', 'uploadImage');
+    Route::get('/', 'getUser');
+    Route::put('/', 'updateUser');
+    Route::group(['middleware' => ['auth:api']], function () {
+        Route::post('/upload-image', 'uploadImage');
+        Route::get('/news', 'getNews');
+        Route::get('/news/mark/{id}', 'markNewsAsRead');
+    });
 });
 
 /*Attach QR Token*/
