@@ -42,7 +42,7 @@ Route::controller(UserController::class)
     Route::group(['middleware' => ['auth:api']], function () {
         Route::post('/upload-image', 'uploadImage');
         Route::get('/news', 'getNews');
-        Route::get('/news/mark/{id}', 'markNewsAsRead');
+        Route::put('/news/mark/{id}', 'markNewsAsRead');
     });
 });
 
