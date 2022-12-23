@@ -8,14 +8,9 @@ use Illuminate\Http\JsonResponse;
 
 class QrController extends Controller
 {
-    public function attachUser(string $token): JsonResponse
+    public function attachUser(QrCode $qrCode): JsonResponse
     {
-        if (!$qrCode = QrCode::where('token', $token)->get()->first()) {
-            return response()->json($this->errorResponse('QR doesn\'t exist'));
-        }
-
-        $user = auth()->user();
-        $qrCode->user_id = $user->id;
+        $qrCode->user_id = auth()->user()->id;
         $qrCode->save();
 
         return response()->json($this->successResponse($qrCode));

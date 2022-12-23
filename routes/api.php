@@ -43,10 +43,13 @@ Route::controller(UserController::class)
         Route::post('/upload-image', 'uploadImage');
         Route::get('/news', 'getNews');
         Route::put('/news/mark/{id}', 'markNewsAsRead');
+
+        /*GET User By QR Token*/
+        Route::get('/qr-codes/{qrCode:token}', 'getByQrToken');
     });
 });
 
 /*Attach QR Token*/
 Route::group(['middleware' => ['auth:api']], function () {
-    Route::post('/qr/{token}/attach-user', [QrController::class, 'attachUser']);
+    Route::post('/qr-codes/{qrCode:token}/attach-user', [QrController::class, 'attachUser']);
 });
