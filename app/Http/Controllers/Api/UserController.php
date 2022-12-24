@@ -37,7 +37,7 @@ class UserController extends Controller
             
             $file = $uploadImageRequest->file('image');
             $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('public/Images'), $filename);
+            $file->move(public_path('public/Images/Logos'), $filename);
 
             $user->image = $filename;
 
