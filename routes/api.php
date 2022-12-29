@@ -49,4 +49,5 @@ Route::controller(UserController::class)
 /*Attach QR Token*/
 Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/qr/{token}/attach-user', [QrController::class, 'attachUser']);
+    Route::post('/qr/{token}', [QrController::class, 'createQrCode']);
 });
