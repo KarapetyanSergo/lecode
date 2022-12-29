@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\UpdateUserRequest;
 use App\Http\Requests\Api\User\UploadImageRequest;
 use App\Http\Resources\UserResource;
+use App\Models\QrCode;
 use ErrorException;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -36,7 +37,7 @@ class UserController extends Controller
             
             $file = $uploadImageRequest->file('image');
             $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('public/Images'), $filename);
+            $file->move(public_path('public/Images/Logos'), $filename);
 
             $user->image = $filename;
 
@@ -53,7 +54,7 @@ class UserController extends Controller
         return response()->json($this->successResponse($news));
     }
 
-    public function markNewsAsRead($newsId): JsonResponse
+    public function markNewsAsRead(int $newsId): JsonResponse
     {
         try {
             $notification = auth()->user()->unreadNotifications
@@ -70,5 +71,14 @@ class UserController extends Controller
         } catch (Exception $e) {
             return response()->json($this->errorResponse($e->getMessage()));
         }
+    }
+
+    public function getByQrToken(QrCode $qrCode): JsonResponse
+    {
+        if (!$qrCode->user_id) {
+            return response()->json($this->errorResponse('User Not Found'), 404);
+        }
+
+        return response()->json($this->successResponse(new UserResource($qrCode->user)));
     }
 }

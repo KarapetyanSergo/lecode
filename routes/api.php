@@ -42,7 +42,10 @@ Route::controller(UserController::class)
     Route::group(['middleware' => ['auth:api']], function () {
         Route::post('/upload-image', 'uploadImage');
         Route::get('/news', 'getNews');
-        Route::get('/news/mark/{id}', 'markNewsAsRead');
+        Route::put('/news/mark/{id}', 'markNewsAsRead');
+
+        /*GET User By QR Token*/
+        Route::get('/qr-codes/{qrCode:token}', 'getByQrToken');
     });
 });
 
@@ -50,4 +53,5 @@ Route::controller(UserController::class)
 Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/qr/{token}/attach-user', [QrController::class, 'attachUser']);
     Route::post('/qr/{token}', [QrController::class, 'createQrCode']);
+    Route::post('/qr-codes/{qrCode:token}/attach-user', [QrController::class, 'attachUser']);
 });
