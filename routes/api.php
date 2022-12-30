@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\QrController;
+use App\Http\Controllers\Api\UploadFileController;
+use App\Http\Controllers\Api\VisitController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotController;
 use Illuminate\Support\Facades\Route;
@@ -49,7 +51,20 @@ Route::controller(UserController::class)
     });
 });
 
-/*Attach QR Token*/
+/*Visits*/
+Route::controller(VisitController::class)
+->prefix('/visits')
+->group(function () {
+    Route::post('/', 'store');
+    Route::get('/by-hour', 'getStatisticsByHour');
+    Route::get('/by-location', 'getStatisticsByLocation');
+});
+
+/*Auth Routes*/
 Route::group(['middleware' => ['auth:api']], function () {
+    /*Attach QR Token*/
     Route::post('/qr-codes/{qrCode:token}/attach-user', [QrController::class, 'attachUser']);
+
+    /*Upload .txt*/
+    Route::post('/files/upload', [UploadFileController::class, 'upload']);
 });
