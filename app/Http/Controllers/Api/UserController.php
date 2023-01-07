@@ -7,9 +7,12 @@ use App\Http\Requests\Api\User\UpdateUserRequest;
 use App\Http\Requests\Api\User\UploadImageRequest;
 use App\Http\Resources\UserResource;
 use App\Models\QrCode;
+use App\Models\QrScanHistory;
+use App\Notifications\UserNewsNotification;
 use ErrorException;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Notification;
 
 class UserController extends Controller
 {
@@ -64,38 +67,27 @@ class UserController extends Controller
         }
     }
 
-    public function getNews(): JsonResponse
-    {
-        $news = auth()->user()->unreadNotifications;
-
-        return response()->json($this->successResponse($news));
-    }
-
-    public function markNewsAsRead(int $newsId): JsonResponse
-    {
-        try {
-            $notification = auth()->user()->unreadNotifications
-            ->where('id', $newsId)
-            ->first();
-
-            if (!$notification) {
-                throw new ErrorException('Unread news with id '.$newsId.' does not exists');
-            };
-
-            $notification->markAsRead();
-
-            return response()->json($this->successResponse(true));
-        } catch (Exception $e) {
-            return response()->json($this->errorResponse($e->getMessage()), 400);
-        }
-    }
-
-    public function getByQrToken(QrCode $qrCode): JsonResponse
+    public function getUserByQrToken(QrCode $qrCode): JsonResponse
     {
         if (!$qrCode->user_id) {
             return response()->json($this->errorResponse('User Not Found'), 404);
         }
 
-        return response()->json($this->successResponse(new UserResource($qrCode->user)));
+        $user = $qrCode->user;
+        $authUser = auth('api')->user();
+
+        if ($authUser) {
+            QrScanHistory::create([
+                'qr_id' => $qrCode->id,
+                'scanned_by' => $authUser->id
+            ]);
+            $message = $authUser->name.' scanned your qr-code';
+        } else {
+            $message = 'An unknown user has scanned your qr-code';
+        }
+
+        Notification::send($user, new UserNewsNotification('qr code scanned', $message));
+        
+        return response()->json($this->successResponse(new UserResource($user)));
     }
 }

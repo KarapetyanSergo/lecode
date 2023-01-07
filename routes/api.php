@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\QrController;
@@ -37,18 +38,23 @@ Route::controller(ForgotController::class)
 
 /*User Profile*/
 Route::controller(UserController::class)
-->middleware('auth:api')
 ->prefix('/users')
 ->group(function () {
-    Route::get('/', 'getUser');
-    Route::put('/', 'updateUser');
-    Route::get('/qr-codes/{qrCode:token}', 'getByQrToken');
+    Route::get('/qr-codes/{qrCode:token}', 'getUserByQrToken')->middleware('web');
     Route::group(['middleware' => ['auth:api']], function () {
+        Route::get('/', 'getUser');
+        Route::put('/', 'updateUser');
         Route::post('/upload-logo', 'uploadLogo');
         Route::post('/upload-background', 'uploadBackgroundImage');
-        Route::get('/news', 'getNews');
-        Route::put('/news/mark/{id}', 'markNewsAsRead');
     });
+});
+
+/*News*/
+Route::controller(NewsController::class)
+->middleware('auth:api')
+->group(function () {
+    Route::get('/users/news', 'getNews');
+    Route::put('/users/news/mark/{id}', 'markNewsAsRead');
 });
 
 /*Visits*/
@@ -62,8 +68,13 @@ Route::controller(VisitController::class)
 
 /*Auth Routes*/
 Route::group(['middleware' => ['auth:api']], function () {
-    /*Attach QR Token*/
-    Route::post('/qr-codes/{qrCode:token}/attach-user', [QrController::class, 'attachUser']);
+    Route::controller(QrController::class)
+    ->prefix('/qr-codes')
+    ->group(function () {
+        Route::post('/{qrCode:token}/attach-user', 'attachUser');
+
+        Route::get('/{qrCode:token}/histories', 'getScansHistories');
+    });
 
     /*Upload .txt*/
     Route::post('/files/upload', [UploadFileController::class, 'upload']);
