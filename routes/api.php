@@ -41,13 +41,12 @@ Route::controller(UserController::class)
 ->group(function () {
     Route::get('/', 'getUser');
     Route::put('/', 'updateUser');
+    Route::get('/qr-codes/{qrCode:token}', 'getByQrToken');
     Route::group(['middleware' => ['auth:api']], function () {
-        Route::post('/upload-image', 'uploadImage');
+        Route::post('/upload-logo', 'uploadLogo');
+        Route::post('/upload-background', 'uploadBackgroundImage');
         Route::get('/news', 'getNews');
         Route::put('/news/mark/{id}', 'markNewsAsRead');
-
-        /*GET User By QR Token*/
-        Route::get('/qr-codes/{qrCode:token}', 'getByQrToken');
     });
 });
 

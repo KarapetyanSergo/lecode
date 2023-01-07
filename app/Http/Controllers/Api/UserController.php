@@ -30,7 +30,7 @@ class UserController extends Controller
         }
     }
 
-    public function uploadImage(UploadImageRequest $uploadImageRequest): JsonResponse
+    public function uploadLogo(UploadImageRequest $uploadImageRequest): JsonResponse
     {
         try {
             $user = auth()->user();
@@ -39,7 +39,24 @@ class UserController extends Controller
             $filename = date('YmdHi').$file->getClientOriginalName();
             $file->move(public_path('public/Images/Logos'), $filename);
 
-            $user->image = $filename;
+            $user->logo = $filename;
+
+            return response()->json($this->successResponse($user->save()));
+        } catch (Exception $e) {
+            return response()->json($this->errorResponse($e->getMessage()));
+        }
+    }
+
+    public function uploadBackgroundImage(UploadImageRequest $uploadImageRequest): JsonResponse
+    {
+        try {
+            $user = auth()->user();
+            
+            $file = $uploadImageRequest->file('image');
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('public/Images/BackgroundImages'), $filename);
+
+            $user->background_image = $filename;
 
             return response()->json($this->successResponse($user->save()));
         } catch (Exception $e) {
