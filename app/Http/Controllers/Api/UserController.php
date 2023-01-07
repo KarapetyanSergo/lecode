@@ -43,7 +43,7 @@ class UserController extends Controller
 
             return response()->json($this->successResponse($user->save()));
         } catch (Exception $e) {
-            return response()->json($this->errorResponse($e->getMessage()));
+            return response()->json($this->errorResponse($e->getMessage()), 400);
         }
     }
 
@@ -60,7 +60,7 @@ class UserController extends Controller
 
             return response()->json($this->successResponse($user->save()));
         } catch (Exception $e) {
-            return response()->json($this->errorResponse($e->getMessage()));
+            return response()->json($this->errorResponse($e->getMessage()), 400);
         }
     }
 
@@ -86,7 +86,7 @@ class UserController extends Controller
 
             return response()->json($this->successResponse(true));
         } catch (Exception $e) {
-            return response()->json($this->errorResponse($e->getMessage()));
+            return response()->json($this->errorResponse($e->getMessage()), 400);
         }
     }
 

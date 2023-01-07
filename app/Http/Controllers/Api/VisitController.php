@@ -24,7 +24,7 @@ class VisitController extends Controller
                 'city' => $loaction->cityName
             ])));
         } catch (Exception $e) {
-            return response()->json($this->errorResponse($e->getMessage()));
+            return response()->json($this->errorResponse($e->getMessage()), 400);
         }
     }
 
@@ -43,7 +43,7 @@ class VisitController extends Controller
 
             return response()->json($this->successResponse($visits));
         } catch (Exception $e) {
-            return response()->json($this->errorResponse($e->getMessage()));
+            return response()->json($this->errorResponse($e->getMessage()), 400);
         }
     }
 
@@ -63,7 +63,7 @@ class VisitController extends Controller
 
             return response()->json($this->successResponse($visits));
         } catch (Exception $e) {
-            return response()->json($this->errorResponse($e->getMessage()));
+            return response()->json($this->errorResponse($e->getMessage()), 400);
         }
     }
 }

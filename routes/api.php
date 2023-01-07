@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\QrController;
 use App\Http\Controllers\Api\UploadFileController;
@@ -66,4 +67,13 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     /*Upload .txt*/
     Route::post('/files/upload', [UploadFileController::class, 'upload']);
+
+    /*Posts*/
+    Route::controller(PostController::class)
+    ->prefix('/posts')
+    ->group(function () {
+        Route::post('/', 'store');
+        Route::get('/', 'index');
+        Route::get('/{post}', 'show');
+    });
 });

@@ -18,7 +18,7 @@ class ForgotController extends Controller
 
             return response()->json($this->successResponse('Email sent successfully'));
         } catch (Exception $e) {
-            return response()->json($this->errorResponse($e->getMessage()));
+            return response()->json($this->errorResponse($e->getMessage()), 400);
         }
     }
 
@@ -29,7 +29,7 @@ class ForgotController extends Controller
 
             return response()->json($this->successResponse('Password successfully changed'));
         } catch (Exception $e) {
-            return response()->json($this->errorResponse($e->getMessage()));
+            return response()->json($this->errorResponse($e->getMessage()), 400);
         }
     }
 }

@@ -19,7 +19,7 @@ class AuthController extends Controller
         
             return response()->json($this->successResponse($register));
         } catch (Exception $e) {
-            return response()->json($this->errorResponse($e->getMessage()));
+            return response()->json($this->errorResponse($e->getMessage()), 400);
         }
     }
 
@@ -31,7 +31,7 @@ class AuthController extends Controller
 
             return response()->json($this->successResponse($response));
         } catch (Exception $e) {
-            return response()->json($this->errorResponse($e->getMessage()));
+            return response()->json($this->errorResponse($e->getMessage()), 400);
         }
     }
 
