@@ -17,8 +17,16 @@ class QrController extends Controller
         return response()->json($this->successResponse($qrCode));
     }
 
-    public function getScansHistories(QrCode $qrCode): JsonResponse
+    public function getScansHistories(): JsonResponse
     {
-        return response()->json($this->successResponse(QrScanHistory::where('qr_id', $qrCode->id)->with('scanned_by')->get()));
+        $histories = QrScanHistory::whereHas('qr_code', function ($q) {
+            $q->whereHas('user', function ($q) {
+                $q->where('id', auth()->user()->id);
+            });
+        })
+        ->with('scanned_by')
+        ->get();
+
+        return response()->json($this->successResponse($histories));
     }
 }

@@ -19,4 +19,9 @@ class QrScanHistory extends Model
     {
         return $this->belongsTo(User::class, 'scanned_by');
     }
+
+    public function qr_code(): BelongsTo
+    {
+        return $this->belongsTo(QrCode::class, 'qr_id');
+    }
 }

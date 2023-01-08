@@ -73,7 +73,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     ->group(function () {
         Route::post('/{qrCode:token}/attach-user', 'attachUser');
 
-        Route::get('/{qrCode:token}/histories', 'getScansHistories');
+        Route::get('/histories', 'getScansHistories');
     });
 
     /*Upload .txt*/
